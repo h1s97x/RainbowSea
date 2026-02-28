@@ -1,0 +1,26 @@
+/* 鼠标样式开始 */
+body {
+    cursor: url(https://cos.cdn.azpay.cn/uploads/2021/11/28/arrow.cur),
+        default;
+}
+
+a,
+img {
+    cursor: url(https://cos.cdn.azpay.cn/uploads/2021/11/28/btn.cur),
+        default;
+}
+
+
+/* 初音未来开始 */
+.cywl {
+    position: fixed;
+    /* 盒子大小 */
+    width: 70px;
+    height: 75px;
+    z-index: 999;
+    /* 左下角 */
+    left: 0;
+    bottom: 0;
+    margin-bottom: calc(env(safe-area-inset-bottom) + 10px);
+    cursor: pointer;
+}
