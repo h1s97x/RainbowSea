@@ -11,10 +11,19 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vue-vendor': ['vue', 'vue-router'],
-          'animation-vendor': ['gsap', 'swiper'],
-          'audio-vendor': ['howler']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') || id.includes('vue-router')) {
+              return 'vue-vendor'
+            }
+            if (id.includes('gsap') || id.includes('swiper')) {
+              return 'animation-vendor'
+            }
+            if (id.includes('howler')) {
+              return 'audio-vendor'
+            }
+            return 'vendor'
+          }
         }
       }
     }
