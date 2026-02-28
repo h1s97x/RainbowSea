@@ -35,13 +35,17 @@ import { ref, onMounted } from 'vue'
 import { useAnimation } from '../composables/useAnimation'
 import LazyImage from '../components/common/LazyImage.vue'
 
+const getAssetUrl = (path) => {
+  return import.meta.env.BASE_URL + path.replace(/^\//, '')
+}
+
 const images = ref([
-  '/assets/image/1.jpg',
-  '/assets/image/12.jpg',
-  '/assets/image/43.jpg',
-  '/assets/image/6.jpg',
-  '/assets/image/111.jpg',
-  '/assets/image/xingyouji1.jpg'
+  getAssetUrl('assets/image/1.jpg'),
+  getAssetUrl('assets/image/12.jpg'),
+  getAssetUrl('assets/image/43.jpg'),
+  getAssetUrl('assets/image/6.jpg'),
+  getAssetUrl('assets/image/111.jpg'),
+  getAssetUrl('assets/image/xingyouji1.jpg')
 ])
 
 const lightboxIndex = ref(null)

@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading" class="loading-container">
     <div class="loading-content">
-      <img src="/assets/image/cat-loading150x150.gif" alt="Loading" class="loading-gif" />
+      <img :src="loadingGif" alt="Loading" class="loading-gif" />
       <p class="loading-text">星际旅行中...</p>
     </div>
   </div>
@@ -10,6 +10,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+const loadingGif = import.meta.env.BASE_URL + 'assets/image/cat-loading150x150.gif'
 const isLoading = ref(true)
 
 onMounted(() => {

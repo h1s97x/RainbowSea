@@ -3,7 +3,7 @@
     <div class="container">
       <div class="nav-content">
         <router-link to="/" class="nav-logo">
-          <img src="/assets/image/xingyouji2.png" alt="星游记" />
+          <img :src="logoUrl" alt="星游记" />
         </router-link>
         
         <ul class="nav-menu" :class="{ 'menu-open': isMenuOpen }">
@@ -37,6 +37,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useScroll } from '../../composables/useScroll'
+
+const logoUrl = import.meta.env.BASE_URL + 'assets/image/xingyouji2.png'
 
 const { scrollY, isScrollingDown } = useScroll()
 const isHidden = ref(false)
