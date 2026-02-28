@@ -1,8 +1,6 @@
-// 导入变量
-@import './variables';
-
-// 导入动画
-@import './animations';
+// 导入变量和动画（使用新的 @use 语法）
+@use './variables' as *;
+@use './animations' as *;
 
 // 全局样式
 * {
