@@ -1,13 +1,13 @@
 <template>
   <div class="episodes">
     <div class="container">
-      <h1 class="page-title fade-in">剧情介绍</h1>
+      <h1 ref="titleRef" class="page-title">剧情介绍</h1>
       
-      <div class="episodes-list">
+      <div ref="listRef" class="episodes-list">
         <div
           v-for="episode in episodes"
           :key="episode.id"
-          class="episode-item slide-in-up"
+          class="episode-item"
         >
           <div class="episode-number">{{ episode.number }}</div>
           <div class="episode-content">
@@ -21,7 +21,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAnimation } from '../composables/useAnimation'
 
 const episodes = ref([
   {
@@ -49,6 +50,18 @@ const episodes = ref([
     description: '古多加入了队伍，团队变得更加强大...'
   }
 ])
+
+const titleRef = ref(null)
+const listRef = ref(null)
+
+const { fadeIn, staggerAnimation } = useAnimation()
+
+onMounted(() => {
+  fadeIn(titleRef.value, { duration: 1 })
+  
+  const items = listRef.value.querySelectorAll('.episode-item')
+  staggerAnimation(items, { delay: 0.3, x: -30 })
+})
 </script>
 
 <style scoped lang="scss">

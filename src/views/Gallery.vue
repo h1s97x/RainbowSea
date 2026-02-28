@@ -1,16 +1,16 @@
 <template>
   <div class="gallery">
     <div class="container">
-      <h1 class="page-title fade-in">图片画廊</h1>
+      <h1 ref="titleRef" class="page-title">图片画廊</h1>
       
-      <div class="gallery-grid">
+      <div ref="gridRef" class="gallery-grid">
         <div
           v-for="(image, index) in images"
           :key="index"
-          class="gallery-item scale-in"
+          class="gallery-item"
           @click="openLightbox(index)"
         >
-          <img :src="image" :alt="`Gallery ${index + 1}`" />
+          <LazyImage :src="image" :alt="`Gallery ${index + 1}`" />
           <div class="gallery-overlay">
             <span>查看大图</span>
           </div>
@@ -18,18 +18,22 @@
       </div>
     </div>
 
-    <!-- 简单的灯箱效果 -->
-    <div v-if="lightboxIndex !== null" class="lightbox" @click="closeLightbox">
-      <button class="lightbox-close">×</button>
-      <img :src="images[lightboxIndex]" alt="Lightbox" />
-      <button class="lightbox-prev" @click.stop="prevImage">‹</button>
-      <button class="lightbox-next" @click.stop="nextImage">›</button>
-    </div>
+    <!-- 灯箱 -->
+    <transition name="lightbox-fade">
+      <div v-if="lightboxIndex !== null" class="lightbox" @click="closeLightbox">
+        <button class="lightbox-close">×</button>
+        <img :src="images[lightboxIndex]" alt="Lightbox" />
+        <button class="lightbox-prev" @click.stop="prevImage">‹</button>
+        <button class="lightbox-next" @click.stop="nextImage">›</button>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAnimation } from '../composables/useAnimation'
+import LazyImage from '../components/common/LazyImage.vue'
 
 const images = ref([
   '/assets/image/1.jpg',
@@ -41,13 +45,26 @@ const images = ref([
 ])
 
 const lightboxIndex = ref(null)
+const titleRef = ref(null)
+const gridRef = ref(null)
+
+const { fadeIn, staggerAnimation } = useAnimation()
+
+onMounted(() => {
+  fadeIn(titleRef.value, { duration: 1 })
+  
+  const items = gridRef.value.querySelectorAll('.gallery-item')
+  staggerAnimation(items, { delay: 0.3, stagger: 0.05 })
+})
 
 const openLightbox = (index) => {
   lightboxIndex.value = index
+  document.body.style.overflow = 'hidden'
 }
 
 const closeLightbox = () => {
   lightboxIndex.value = null
+  document.body.style.overflow = ''
 }
 
 const prevImage = () => {
@@ -93,14 +110,7 @@ const nextImage = () => {
   border-radius: 10px;
   cursor: pointer;
   
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
+  &:hover :deep(.image) {
     transform: scale(1.1);
   }
 }
@@ -145,6 +155,16 @@ const nextImage = () => {
     max-height: 90%;
     object-fit: contain;
   }
+}
+
+.lightbox-fade-enter-active,
+.lightbox-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to {
+  opacity: 0;
 }
 
 .lightbox-close {

@@ -6,24 +6,35 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/Home.vue')
+      component: () => import('../views/Home.vue'),
+      meta: { transition: 'fade' }
     },
     {
       path: '/characters',
       name: 'characters',
-      component: () => import('../views/Characters.vue')
+      component: () => import('../views/Characters.vue'),
+      meta: { transition: 'slide-left' }
     },
     {
       path: '/episodes',
       name: 'episodes',
-      component: () => import('../views/Episodes.vue')
+      component: () => import('../views/Episodes.vue'),
+      meta: { transition: 'slide-left' }
     },
     {
       path: '/gallery',
       name: 'gallery',
-      component: () => import('../views/Gallery.vue')
+      component: () => import('../views/Gallery.vue'),
+      meta: { transition: 'slide-up' }
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0, behavior: 'smooth' }
+    }
+  }
 })
 
 export default router

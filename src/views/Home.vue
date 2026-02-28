@@ -2,9 +2,9 @@
   <div class="home">
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-title fade-in">星游记</h1>
-        <p class="hero-subtitle slide-in-up">Rainbow Sea Journey</p>
-        <p class="hero-description slide-in-up">
+        <h1 ref="titleRef" class="hero-title">星游记</h1>
+        <p ref="subtitleRef" class="hero-subtitle">Rainbow Sea Journey</p>
+        <p ref="descRef" class="hero-description">
           在彩虹海的尽头，有一个传说中的地方...
         </p>
       </div>
@@ -17,9 +17,10 @@
           :slides-per-view="1"
           :space-between="30"
           :loop="true"
-          :autoplay="{ delay: 3000 }"
+          :autoplay="{ delay: 3000, disableOnInteraction: false }"
           :pagination="{ clickable: true }"
           :navigation="true"
+          :effect="'fade'"
           class="main-swiper"
         >
           <swiper-slide v-for="(image, index) in carouselImages" :key="index">
@@ -29,7 +30,7 @@
       </div>
     </section>
 
-    <section class="intro-section">
+    <section ref="introRef" class="intro-section">
       <div class="container">
         <h2 class="section-title">关于星游记</h2>
         <div class="intro-content">
@@ -49,17 +50,44 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules'
 import { CAROUSEL_IMAGES } from '../utils/constants'
+import { useAnimation } from '../composables/useAnimation'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import 'swiper/css/effect-fade'
 
-const modules = [Navigation, Pagination, Autoplay]
+const modules = [Navigation, Pagination, Autoplay, EffectFade]
 const carouselImages = ref(CAROUSEL_IMAGES)
+
+const titleRef = ref(null)
+const subtitleRef = ref(null)
+const descRef = ref(null)
+const introRef = ref(null)
+
+const { fadeIn, slideInUp, scrollTriggerAnimation } = useAnimation()
+
+onMounted(() => {
+  // 标题动画
+  fadeIn(titleRef.value, { duration: 1.5, delay: 0.3 })
+  
+  // 副标题动画
+  slideInUp(subtitleRef.value, { delay: 0.8 })
+  
+  // 描述动画
+  slideInUp(descRef.value, { delay: 1.2 })
+  
+  // 简介区域滚动触发动画
+  scrollTriggerAnimation(introRef.value, {
+    y: 50,
+    opacity: 0,
+    duration: 1
+  })
+})
 </script>
 
 <style scoped lang="scss">

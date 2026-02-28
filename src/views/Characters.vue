@@ -1,16 +1,16 @@
 <template>
   <div class="characters">
     <div class="container">
-      <h1 class="page-title fade-in">人物介绍</h1>
+      <h1 ref="titleRef" class="page-title">人物介绍</h1>
       
-      <div class="characters-grid">
+      <div ref="gridRef" class="characters-grid">
         <div
           v-for="character in characters"
           :key="character.id"
-          class="character-card scale-in"
+          class="character-card"
         >
           <div class="character-image">
-            <img :src="character.image" :alt="character.name" />
+            <LazyImage :src="character.image" :alt="character.name" />
           </div>
           <div class="character-info">
             <h3>{{ character.name }}</h3>
@@ -23,10 +23,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { CHARACTERS } from '../utils/constants'
+import { useAnimation } from '../composables/useAnimation'
+import LazyImage from '../components/common/LazyImage.vue'
 
 const characters = ref(CHARACTERS)
+const titleRef = ref(null)
+const gridRef = ref(null)
+
+const { fadeIn, staggerAnimation } = useAnimation()
+
+onMounted(() => {
+  // 标题动画
+  fadeIn(titleRef.value, { duration: 1 })
+  
+  // 卡片交错动画
+  const cards = gridRef.value.querySelectorAll('.character-card')
+  staggerAnimation(cards, { delay: 0.3 })
+})
 </script>
 
 <style scoped lang="scss">
@@ -66,14 +81,7 @@ const characters = ref(CHARACTERS)
   height: 300px;
   overflow: hidden;
   
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
+  &:hover :deep(.image) {
     transform: scale(1.1);
   }
 }
