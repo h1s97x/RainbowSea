@@ -8,6 +8,7 @@
           v-for="character in characters"
           :key="character.id"
           class="character-card"
+          @click="openModal(character)"
         >
           <div class="character-image">
             <LazyImage :src="character.image" :alt="character.name" />
@@ -15,10 +16,18 @@
           <div class="character-info">
             <h3>{{ character.name }}</h3>
             <p>{{ character.description }}</p>
+            <button class="view-details">查看详情 →</button>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- 人物详情弹窗 -->
+    <CharacterModal
+      :show="showModal"
+      :character="selectedCharacter"
+      @close="closeModal"
+    />
   </div>
 </template>
 
@@ -27,21 +36,31 @@ import { ref, onMounted } from 'vue'
 import { CHARACTERS } from '../utils/constants'
 import { useAnimation } from '../composables/useAnimation'
 import LazyImage from '../components/common/LazyImage.vue'
+import CharacterModal from '../components/common/CharacterModal.vue'
 
 const characters = ref(CHARACTERS)
 const titleRef = ref(null)
 const gridRef = ref(null)
+const showModal = ref(false)
+const selectedCharacter = ref({})
 
 const { fadeIn, staggerAnimation } = useAnimation()
 
 onMounted(() => {
-  // 标题动画
   fadeIn(titleRef.value, { duration: 1 })
   
-  // 卡片交错动画
   const cards = gridRef.value.querySelectorAll('.character-card')
   staggerAnimation(cards, { delay: 0.3 })
 })
+
+const openModal = (character) => {
+  selectedCharacter.value = character
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+}
 </script>
 
 <style scoped lang="scss">
@@ -98,6 +117,23 @@ onMounted(() => {
   p {
     color: #aaa;
     line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+}
+
+.view-details {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
   }
 }
 </style>
