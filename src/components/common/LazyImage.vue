@@ -1,12 +1,14 @@
 <template>
-  <div class="lazy-image" :class="{ loaded: isLoaded }">
+  <div class="lazy-image" :class="{ loaded: isLoaded, error: hasError }">
     <img
-      v-if="isLoaded"
+      v-if="isLoaded && !hasError"
       :src="src"
       :alt="alt"
-      @load="onLoad"
       class="image"
     />
+    <div v-else-if="hasError" class="error-placeholder">
+      <span>图片加载失败</span>
+    </div>
     <div v-else class="placeholder">
       <div class="spinner"></div>
     </div>
@@ -14,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 const props = defineProps({
   src: {
@@ -28,18 +30,34 @@ const props = defineProps({
 })
 
 const isLoaded = ref(false)
+const hasError = ref(false)
 
-onMounted(() => {
+const loadImage = () => {
+  isLoaded.value = false
+  hasError.value = false
+  
   const img = new Image()
   img.src = props.src
+  
   img.onload = () => {
     isLoaded.value = true
+    hasError.value = false
   }
+  
+  img.onerror = () => {
+    isLoaded.value = false
+    hasError.value = true
+    console.error('Failed to load image:', props.src)
+  }
+}
+
+onMounted(() => {
+  loadImage()
 })
 
-const onLoad = () => {
-  // 图片加载完成后的额外处理
-}
+watch(() => props.src, () => {
+  loadImage()
+})
 </script>
 
 <style scoped lang="scss">
@@ -58,13 +76,19 @@ const onLoad = () => {
   animation: fadeIn 0.5s ease;
 }
 
-.placeholder {
+.placeholder,
+.error-placeholder {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.05);
+}
+
+.error-placeholder {
+  color: #e74c3c;
+  font-size: 0.9rem;
 }
 
 .spinner {

@@ -44,6 +44,10 @@ const gridRef = ref(null)
 const showModal = ref(false)
 const selectedCharacter = ref({})
 
+// 调试：打印角色数据
+console.log('Characters data:', CHARACTERS)
+console.log('Characters count:', CHARACTERS.length)
+
 const { fadeIn, staggerAnimation } = useAnimation()
 
 onMounted(() => {

@@ -2,6 +2,10 @@
 
 基于 Vue 3 + Vite 构建的《星游记》动画展示网站。
 
+## 在线预览
+
+🌐 **访问地址**: https://h1s97x.github.io/RainbowSea/
+
 ## 技术栈
 
 - **Vue 3** - 渐进式 JavaScript 框架
@@ -78,6 +82,26 @@ npm run build
 ```bash
 npm run preview
 ```
+
+## 部署
+
+项目已配置 GitHub Actions 自动部署到 GitHub Pages。
+
+### 自动部署
+
+推送到 main 分支会自动触发部署：
+
+```bash
+git push origin main
+```
+
+### 手动部署
+
+1. 进入 GitHub 仓库的 Actions 标签
+2. 选择 "Deploy to GitHub Pages" 工作流
+3. 点击 "Run workflow"
+
+详细部署说明请查看 [部署指南](./docs/部署指南.md)
 
 ## 页面说明
 
