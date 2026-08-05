@@ -3,33 +3,17 @@
 main:
   push:
     - name: sync-to-github
-      # 敏感信息（GIT_USERNAME / GIT_ACCESS_TOKEN）存放在密钥仓库 secret-env，通过 imports 引用
+      # 敏感信息（GITHUB_USERNAME / GITHUB_TOKEN）存放在密钥仓库 secret-env，通过 imports 引用
       imports:
         - https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
       stages:
-        # 凭据预检：imports 导入失败或变量名不一致时在此明确报错，避免 git push 报晦涩的
-        # "could not read Username" 错误。若此处 FAIL，请检查 secret-env 密钥仓库
-        # env.yml 中是否声明了 GIT_USERNAME / GIT_ACCESS_TOKEN 且值非空。
-        - name: verify git credentials
-          script: |
-            set -e
-            if [ -z "${GIT_USERNAME:-}" ]; then
-              echo "[FAIL] 环境变量 GIT_USERNAME 为空或未定义（检查 secret-env 密钥仓库 env.yml）"
-              exit 1
-            fi
-            echo "[OK] GIT_USERNAME 已注入 (length=${#GIT_USERNAME})"
-            if [ -z "${GIT_ACCESS_TOKEN:-}" ]; then
-              echo "[FAIL] 环境变量 GIT_ACCESS_TOKEN 为空或未定义（检查 secret-env 密钥仓库 env.yml）"
-              exit 1
-            fi
-            echo "[OK] GIT_ACCESS_TOKEN 已注入 (length=${#GIT_ACCESS_TOKEN})"
         - name: sync to github
           image: tencentcom/git-sync
           settings:
             target_url: https://github.com/h1s97x/RainbowSea.git
             auth_type: https
-            username: ${GIT_USERNAME}
-            password: ${GIT_ACCESS_TOKEN}
+            username: ${GITHUB_USERNAME}
+            password: ${GITHUB_TOKEN}
             branch: main
             force: true
 
