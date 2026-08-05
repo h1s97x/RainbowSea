@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 P5R/
+# ESLint / Prettier cache
+.eslintcache

@@ -1,6 +1,6 @@
 <template>
   <div class="music-player" :class="{ 'player-expanded': isExpanded }">
-    <button class="player-toggle" @click="toggleExpand">
+    <button class="player-toggle" @click="toggleExpand" aria-label="切换音乐播放器">
       <span v-if="isPlaying">🎵</span>
       <span v-else>🎶</span>
     </button>
@@ -12,7 +12,7 @@
       </div>
 
       <div class="player-controls">
-        <button @click="togglePlay" class="btn-play">
+        <button @click="store.togglePlay()" class="btn-play" aria-label="播放或暂停">
           {{ isPlaying ? '⏸' : '▶' }}
         </button>
       </div>
@@ -25,6 +25,7 @@
           :max="duration"
           @input="handleSeek"
           class="progress-bar"
+          aria-label="播放进度"
         />
         <span class="time">{{ formatTime(duration) }}</span>
       </div>
@@ -38,6 +39,7 @@
           step="0.01"
           @input="handleVolumeChange"
           class="volume-bar"
+          aria-label="音量"
         />
       </div>
 
@@ -56,47 +58,36 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useMusic } from '../../composables/useMusic'
-import { MUSIC_LIST } from '../../utils/constants'
-import { formatTime } from '../../utils/helpers'
+import { storeToRefs } from 'pinia'
+import { useMusicStore } from '@/stores/music'
+import { formatTime } from '@/utils/helpers'
 
+const store = useMusicStore()
+const { currentTrack, isPlaying, currentTime, duration, volume, playlist } = storeToRefs(store)
 const isExpanded = ref(false)
-const playlist = ref(MUSIC_LIST)
-
-const {
-  currentTrack,
-  isPlaying,
-  currentTime,
-  duration,
-  volume,
-  loadTrack,
-  togglePlay,
-  seek,
-  setVolume
-} = useMusic()
 
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value
 }
 
-const selectTrack = (track) => {
-  loadTrack(track)
-  togglePlay()
+const selectTrack = (track: (typeof store.playlist)[number]) => {
+  store.loadTrack(track)
+  store.togglePlay()
 }
 
-const handleSeek = (e) => {
-  seek(parseFloat(e.target.value))
+const handleSeek = (e: Event) => {
+  store.seek(parseFloat((e.target as HTMLInputElement).value))
 }
 
-const handleVolumeChange = (e) => {
-  setVolume(parseFloat(e.target.value))
+const handleVolumeChange = (e: Event) => {
+  store.setVolume(parseFloat((e.target as HTMLInputElement).value))
 }
 
 onMounted(() => {
-  if (playlist.value.length > 0) {
-    loadTrack(playlist.value[0])
+  if (!store.currentTrack && playlist.value.length > 0) {
+    store.loadTrack(playlist.value[0])
   }
 })
 </script>
@@ -112,7 +103,7 @@ onMounted(() => {
   padding: 1rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  
+
   &.player-expanded {
     width: 350px;
   }
@@ -133,13 +124,13 @@ onMounted(() => {
 .player-header {
   text-align: center;
   margin-bottom: 1rem;
-  
+
   h3 {
     color: #fff;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
   }
-  
+
   p {
     color: #aaa;
     font-size: 0.9rem;
@@ -162,7 +153,7 @@ onMounted(() => {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: #357abd;
     transform: scale(1.1);
@@ -174,7 +165,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  
+
   .time {
     color: #aaa;
     font-size: 0.8rem;
@@ -188,7 +179,7 @@ onMounted(() => {
   border-radius: 5px;
   outline: none;
   background: rgba(255, 255, 255, 0.2);
-  
+
   &::-webkit-slider-thumb {
     appearance: none;
     width: 15px;
@@ -204,7 +195,7 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  
+
   span {
     font-size: 1.2rem;
   }
@@ -221,12 +212,12 @@ onMounted(() => {
   cursor: pointer;
   border-radius: 5px;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
   }
-  
+
   &.active {
     background: rgba(74, 144, 226, 0.3);
     color: #4a90e2;
@@ -234,7 +225,8 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {

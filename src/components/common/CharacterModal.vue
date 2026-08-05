@@ -3,12 +3,12 @@
     <div v-if="show" class="modal-overlay" @click="closeModal">
       <div class="modal-container" @click.stop>
         <button class="modal-close" @click="closeModal">×</button>
-        
+
         <div class="modal-content">
           <div class="modal-image">
             <img :src="character.image" :alt="character.name" />
           </div>
-          
+
           <div class="modal-info">
             <h2 class="character-name">{{ character.name }}</h2>
             <div class="character-details">
@@ -16,12 +16,12 @@
                 <span class="label">角色介绍：</span>
                 <p>{{ character.description }}</p>
               </div>
-              
+
               <div v-if="character.fullDescription" class="detail-item">
                 <span class="label">详细信息：</span>
                 <p>{{ character.fullDescription }}</p>
               </div>
-              
+
               <div v-if="character.abilities" class="detail-item">
                 <span class="label">特殊能力：</span>
                 <ul class="abilities-list">
@@ -30,7 +30,7 @@
                   </li>
                 </ul>
               </div>
-              
+
               <div v-if="character.quote" class="detail-item quote">
                 <span class="quote-icon">"</span>
                 <p>{{ character.quote }}</p>
@@ -43,33 +43,33 @@
   </transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { watch } from 'vue'
+import type { Character } from '@/types/character'
 
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  },
-  character: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  show: boolean
+  character: Character
+}>()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
 
 const closeModal = () => {
   emit('close')
 }
 
-watch(() => props.show, (newVal) => {
-  if (newVal) {
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.body.style.overflow = ''
+watch(
+  () => props.show,
+  (newVal) => {
+    if (newVal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
   }
-})
+)
 </script>
 
 <style scoped lang="scss">
@@ -117,7 +117,7 @@ watch(() => props.show, (newVal) => {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  
+
   &:hover {
     background: rgba(231, 76, 60, 0.8);
     transform: rotate(90deg);
@@ -129,7 +129,7 @@ watch(() => props.show, (newVal) => {
   grid-template-columns: 1fr 1.5fr;
   gap: 2rem;
   padding: 2rem;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -156,7 +156,7 @@ watch(() => props.show, (newVal) => {
   color: #4a90e2;
   margin: 0;
   text-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
@@ -176,7 +176,7 @@ watch(() => props.show, (newVal) => {
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
-  
+
   p {
     color: #ccc;
     line-height: 1.8;
@@ -188,13 +188,13 @@ watch(() => props.show, (newVal) => {
   list-style: none;
   padding: 0;
   margin: 0;
-  
+
   li {
     color: #ccc;
     padding: 0.5rem 0;
     padding-left: 1.5rem;
     position: relative;
-    
+
     &::before {
       content: '⭐';
       position: absolute;
@@ -210,7 +210,7 @@ watch(() => props.show, (newVal) => {
   border-left: 4px solid #4a90e2;
   border-radius: 5px;
   margin-top: 1rem;
-  
+
   .quote-icon {
     position: absolute;
     top: -10px;
@@ -219,7 +219,7 @@ watch(() => props.show, (newVal) => {
     color: #4a90e2;
     opacity: 0.3;
   }
-  
+
   p {
     font-style: italic;
     color: #fff;
@@ -231,7 +231,7 @@ watch(() => props.show, (newVal) => {
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.3s ease;
-  
+
   .modal-container {
     transition: transform 0.3s ease;
   }
@@ -240,7 +240,7 @@ watch(() => props.show, (newVal) => {
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
-  
+
   .modal-container {
     transform: scale(0.9);
   }
@@ -258,7 +258,7 @@ watch(() => props.show, (newVal) => {
 .modal-container::-webkit-scrollbar-thumb {
   background: rgba(74, 144, 226, 0.5);
   border-radius: 4px;
-  
+
   &:hover {
     background: rgba(74, 144, 226, 0.7);
   }

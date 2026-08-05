@@ -2,15 +2,15 @@
   <div class="gallery">
     <div class="container">
       <h1 ref="titleRef" class="page-title">图片画廊</h1>
-      
+
       <div ref="gridRef" class="gallery-grid">
         <div
           v-for="(image, index) in images"
-          :key="index"
+          :key="image.id"
           class="gallery-item"
           @click="openLightbox(index)"
         >
-          <LazyImage :src="image" :alt="`Gallery ${index + 1}`" />
+          <LazyImage :src="image.src" :alt="image.alt" />
           <div class="gallery-overlay">
             <span>查看大图</span>
           </div>
@@ -21,47 +21,37 @@
     <!-- 灯箱 -->
     <transition name="lightbox-fade">
       <div v-if="lightboxIndex !== null" class="lightbox" @click="closeLightbox">
-        <button class="lightbox-close">×</button>
-        <img :src="images[lightboxIndex]" alt="Lightbox" />
-        <button class="lightbox-prev" @click.stop="prevImage">‹</button>
-        <button class="lightbox-next" @click.stop="nextImage">›</button>
+        <button class="lightbox-close" @click.stop="closeLightbox" aria-label="关闭">×</button>
+        <img :src="images[lightboxIndex].src" :alt="images[lightboxIndex].alt" />
+        <button class="lightbox-prev" @click.stop="prevImage" aria-label="上一张">‹</button>
+        <button class="lightbox-next" @click.stop="nextImage" aria-label="下一张">›</button>
       </div>
     </transition>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { useAnimation } from '../composables/useAnimation'
-import LazyImage from '../components/common/LazyImage.vue'
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import { GALLERY_IMAGES } from '@/data/gallery'
+import { useAnimation } from '@/composables/useAnimation'
+import LazyImage from '@/components/common/LazyImage.vue'
 
-const getAssetUrl = (path) => {
-  return import.meta.env.BASE_URL + path.replace(/^\//, '')
-}
+const images = ref(GALLERY_IMAGES)
 
-const images = ref([
-  getAssetUrl('assets/image/1.jpg'),
-  getAssetUrl('assets/image/12.jpg'),
-  getAssetUrl('assets/image/43.jpg'),
-  getAssetUrl('assets/image/6.jpg'),
-  getAssetUrl('assets/image/111.jpg'),
-  getAssetUrl('assets/image/xingyouji1.jpg')
-])
-
-const lightboxIndex = ref(null)
-const titleRef = ref(null)
-const gridRef = ref(null)
+const lightboxIndex = ref<number | null>(null)
+const titleRef = ref<HTMLElement | null>(null)
+const gridRef = ref<HTMLElement | null>(null)
 
 const { fadeIn, staggerAnimation } = useAnimation()
 
 onMounted(() => {
   fadeIn(titleRef.value, { duration: 1 })
-  
-  const items = gridRef.value.querySelectorAll('.gallery-item')
+
+  const items = gridRef.value?.querySelectorAll('.gallery-item') ?? []
   staggerAnimation(items, { delay: 0.3, stagger: 0.05 })
 })
 
-const openLightbox = (index) => {
+const openLightbox = (index: number) => {
   lightboxIndex.value = index
   document.body.style.overflow = 'hidden'
 }
@@ -72,6 +62,7 @@ const closeLightbox = () => {
 }
 
 const prevImage = () => {
+  if (lightboxIndex.value === null) return
   if (lightboxIndex.value > 0) {
     lightboxIndex.value--
   } else {
@@ -80,12 +71,34 @@ const prevImage = () => {
 }
 
 const nextImage = () => {
+  if (lightboxIndex.value === null) return
   if (lightboxIndex.value < images.value.length - 1) {
     lightboxIndex.value++
   } else {
     lightboxIndex.value = 0
   }
 }
+
+// 键盘支持：Esc 关闭、←/→ 切换
+const handleKeydown = (e: KeyboardEvent) => {
+  if (lightboxIndex.value === null) return
+  if (e.key === 'Escape') {
+    closeLightbox()
+  } else if (e.key === 'ArrowLeft') {
+    prevImage()
+  } else if (e.key === 'ArrowRight') {
+    nextImage()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
+})
 </script>
 
 <style scoped lang="scss">
@@ -113,7 +126,7 @@ const nextImage = () => {
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
-  
+
   &:hover :deep(.image) {
     transform: scale(1.1);
   }
@@ -131,12 +144,12 @@ const nextImage = () => {
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  
+
   span {
     color: #fff;
     font-size: 1.2rem;
   }
-  
+
   .gallery-item:hover & {
     opacity: 1;
   }
@@ -153,7 +166,7 @@ const nextImage = () => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  
+
   img {
     max-width: 90%;
     max-height: 90%;
@@ -181,7 +194,7 @@ const nextImage = () => {
   font-size: 3rem;
   cursor: pointer;
   z-index: 10000;
-  
+
   &:hover {
     color: #4a90e2;
   }
@@ -201,7 +214,7 @@ const nextImage = () => {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: rgba(74, 144, 226, 0.5);
   }

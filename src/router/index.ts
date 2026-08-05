@@ -28,7 +28,7 @@ const router = createRouter({
       meta: { transition: 'slide-up' }
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {

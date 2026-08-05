@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>星游记 - Rainbow Sea Journey</title>
+    <script>
+      // GitHub Pages SPA 路由兜底：
+      // 将当前路径保存到 sessionStorage，然后跳转到首页，
+      // 首页加载后由应用读取并恢复路由。
+      ;(function () {
+        var path = window.location.pathname
+        if (path && path !== '/' && path.indexOf('/index.html') === -1) {
+          sessionStorage.setItem('rainbowsea:redirect', path)
+        }
+        var base = '/RainbowSea/'
+        window.location.replace(base)
+      })()
+    </script>
+  </head>
+  <body>
+    <p>正在跳转...</p>
+  </body>
+</html>

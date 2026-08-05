@@ -1,10 +1,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import { throttle } from '../utils/helpers'
+import { throttle } from '@/utils/helpers'
 
+/**
+ * 滚动状态监听：返回当前滚动位置与滚动方向。
+ */
 export function useScroll() {
   const scrollY = ref(0)
   const isScrollingDown = ref(false)
-  
+
   let lastScrollY = 0
 
   const handleScroll = throttle(() => {

@@ -1,11 +1,6 @@
 <template>
   <div class="lazy-image" :class="{ loaded: isLoaded, error: hasError }">
-    <img
-      v-if="isLoaded && !hasError"
-      :src="src"
-      :alt="alt"
-      class="image"
-    />
+    <img v-if="isLoaded && !hasError" :src="src" :alt="alt" class="image" />
     <div v-else-if="hasError" class="error-placeholder">
       <span>图片加载失败</span>
     </div>
@@ -15,7 +10,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 
 const props = defineProps({
@@ -35,15 +30,15 @@ const hasError = ref(false)
 const loadImage = () => {
   isLoaded.value = false
   hasError.value = false
-  
+
   const img = new Image()
   img.src = props.src
-  
+
   img.onload = () => {
     isLoaded.value = true
     hasError.value = false
   }
-  
+
   img.onerror = () => {
     isLoaded.value = false
     hasError.value = true
@@ -55,9 +50,12 @@ onMounted(() => {
   loadImage()
 })
 
-watch(() => props.src, () => {
-  loadImage()
-})
+watch(
+  () => props.src,
+  () => {
+    loadImage()
+  }
+)
 </script>
 
 <style scoped lang="scss">

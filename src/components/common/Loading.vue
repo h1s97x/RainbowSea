@@ -7,16 +7,35 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import { useLoadingStore } from '@/stores/loading'
 
 const loadingGif = import.meta.env.BASE_URL + 'assets/image/cat-loading150x150.gif'
-const isLoading = ref(true)
+
+const loadingStore = useLoadingStore()
+const isLoading = loadingStore.isLoading
+
+let fallback: ReturnType<typeof setTimeout> | null = null
+let cleanupLoad: (() => void) | null = null
 
 onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 2000)
+  const finish = () => loadingStore.finish()
+
+  if (document.readyState === 'complete') {
+    finish()
+  } else {
+    window.addEventListener('load', finish, { once: true })
+    cleanupLoad = () => window.removeEventListener('load', finish)
+  }
+
+  // 最晚兜底 3 秒，避免资源异常时一直卡在加载页
+  fallback = setTimeout(finish, 3000)
+})
+
+onUnmounted(() => {
+  cleanupLoad?.()
+  if (fallback) clearTimeout(fallback)
 })
 </script>
 
@@ -59,7 +78,8 @@ onMounted(() => {
 }
 
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

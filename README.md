@@ -8,35 +8,38 @@
 
 ## 技术栈
 
-- **Vue 3** - 渐进式 JavaScript 框架
-- **Vite** - 下一代前端构建工具
-- **Vue Router** - 官方路由管理器
+- **Vue 3.5** - 渐进式 JavaScript 框架（Composition API + `<script setup>`）
+- **Vite 8** - 下一代前端构建工具（稳定正式版）
+- **Vue Router 4** - 官方路由管理器
+- **Pinia 4** - 全局状态管理（音乐/加载）
+- **TypeScript 5** - 类型安全（渐进式迁移）
 - **GSAP** - 专业级动画库
 - **Swiper** - 现代化轮播组件
 - **Howler.js** - 音频处理库
-- **Bootstrap 5** - CSS 框架
-- **SCSS** - CSS 预处理器
+- **SCSS** - CSS 预处理器（设计 Token）
+- **ESLint + Prettier** - 代码规范
 
 ## 功能特性
 
 - ✨ 星空背景动画效果
-- 🎵 背景音乐播放器
+- 🎵 背景音乐播放器（全局状态 + 持久化）
 - 🖼️ 图片轮播展示
 - 📱 响应式设计
-- 🎨 流畅的页面动画
+- 🎨 流畅的页面动画（GSAP + v-reveal 指令）
 - 🎭 人物介绍展示
 - 📖 剧情介绍
-- 🖼️ 图片画廊（带灯箱效果）
+- 🖼️ 图片画廊（带灯箱 + 键盘支持）
 
 ## 项目结构
 
 ```
-star-journey-vue/
+RainbowSea/
 ├── public/                 # 静态资源
 │   ├── assets/
 │   │   ├── image/         # 图片资源
 │   │   ├── fonts/         # 字体文件
 │   │   └── music/         # 音乐文件
+│   ├── 404.html           # SPA 路由兜底
 │   └── favicon.ico
 ├── src/
 │   ├── assets/            # 源码资源
@@ -45,15 +48,20 @@ star-journey-vue/
 │   │   ├── layout/        # 布局组件
 │   │   ├── common/        # 通用组件
 │   │   └── effects/       # 特效组件
+│   ├── data/              # 数据层（内容与代码解耦）
+│   ├── stores/            # Pinia 状态层
+│   ├── types/             # 类型定义
+│   ├── directives/        # 自定义指令（v-reveal）
 │   ├── views/             # 页面视图
 │   ├── composables/       # 组合式函数
 │   ├── router/            # 路由配置
 │   ├── utils/             # 工具函数
 │   ├── App.vue            # 根组件
-│   └── main.js            # 入口文件
+│   └── main.ts            # 入口文件
 ├── index.html
 ├── package.json
 └── vite.config.js
+```
 
 ## 开发指南
 
@@ -70,6 +78,20 @@ npm run dev
 ```
 
 访问 http://localhost:5173
+
+### 类型检查
+
+```bash
+npm run type-check
+```
+
+### 代码规范
+
+```bash
+npm run lint        # 修复可自动修复的问题
+npm run lint:check  # 仅检查
+npm run format      # 格式化
+```
 
 ### 构建生产版本
 
@@ -103,6 +125,13 @@ git push origin main
 
 详细部署说明请查看 [部署指南](./docs/部署指南.md)
 
+## 文档导航
+
+- [架构方案](./docs/架构方案.md) - 技术栈选型 / 目标架构 / 迁移路线 / ADR
+- [Nuxt 3 迁移路线评估](./docs/Nuxt3迁移路线评估.md) - 迁移 Nuxt 3 的专项评估（当前不建议，留作预案）
+- [改造方案](./docs/改造方案.md) - 早期方案对比
+- [部署指南](./docs/部署指南.md) - GitHub Pages 部署说明
+
 ## 页面说明
 
 - **首页** (`/`) - 展示轮播图和简介
@@ -133,5 +162,5 @@ git push origin main
 
 ---
 
-**版本**: 1.0.0  
-**更新日期**: 2026-02-28
+**版本**: 1.2.0  
+**更新日期**: 2026-08-05

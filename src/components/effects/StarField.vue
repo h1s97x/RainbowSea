@@ -2,15 +2,21 @@
   <canvas ref="canvasRef" class="star-field"></canvas>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const canvasRef = ref(null)
-let animationId = null
-let stars = []
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+let animationId: number | null = null
+let stars: Star[] = []
 
 class Star {
-  constructor(canvas) {
+  canvas: HTMLCanvasElement
+  x = 0
+  y = 0
+  z = 0
+  speed = 1
+
+  constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas
     this.reset()
   }
@@ -29,7 +35,7 @@ class Star {
     }
   }
 
-  draw(ctx) {
+  draw(ctx: CanvasRenderingContext2D) {
     const x = (this.x - this.canvas.width / 2) * (this.canvas.width / this.z)
     const y = (this.y - this.canvas.height / 2) * (this.canvas.width / this.z)
     const size = (1 - this.z / this.canvas.width) * 3
@@ -62,10 +68,11 @@ const animate = () => {
   if (!canvas) return
 
   const ctx = canvas.getContext('2d')
+  if (!ctx) return
   ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  stars.forEach(star => {
+  stars.forEach((star) => {
     star.update()
     star.draw(ctx)
   })
