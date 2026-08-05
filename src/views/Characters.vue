@@ -1,12 +1,13 @@
 <template>
   <div class="characters">
     <div class="container">
-      <h1 ref="titleRef" class="page-title">人物介绍</h1>
+      <h1 v-reveal class="page-title">人物介绍</h1>
 
-      <div ref="gridRef" class="characters-grid">
+      <div class="characters-grid">
         <div
           v-for="character in characters"
           :key="character.id"
+          v-reveal="{ options: { y: 30, stagger: 0.1 } }"
           class="character-card"
           @click="openModal(character)"
         >
@@ -28,30 +29,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { CHARACTERS } from '@/data/characters'
 import type { Character } from '@/types/character'
-import { useAnimation } from '@/composables/useAnimation'
 import LazyImage from '@/components/common/LazyImage.vue'
 import CharacterModal from '@/components/common/CharacterModal.vue'
 
 const characters = ref(CHARACTERS)
-const titleRef = ref<HTMLElement | null>(null)
-const gridRef = ref<HTMLElement | null>(null)
 const showModal = ref(false)
 const selectedCharacter = ref<Character | null>(null)
 
 // 弹窗打开时 selectedCharacter 必非空；未选中时传空对象占位
 const modalCharacter = computed(() => selectedCharacter.value ?? ({} as Character))
-
-const { fadeIn, staggerAnimation } = useAnimation()
-
-onMounted(() => {
-  fadeIn(titleRef.value, { duration: 1 })
-
-  const cards = gridRef.value?.querySelectorAll('.character-card') ?? []
-  staggerAnimation(cards, { delay: 0.3 })
-})
 
 const openModal = (character: Character) => {
   selectedCharacter.value = character
@@ -64,6 +53,8 @@ const closeModal = () => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .characters {
   min-height: 100vh;
   padding: 8rem 0 4rem;
@@ -71,7 +62,7 @@ const closeModal = () => {
 
 .page-title {
   font-size: 3rem;
-  color: #fff;
+  color: $light-text;
   text-align: center;
   margin-bottom: 3rem;
 }
@@ -83,15 +74,15 @@ const closeModal = () => {
 }
 
 .character-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  background: $surface-color;
+  border-radius: $radius-md;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: $transition-base;
   cursor: pointer;
 
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+    box-shadow: 0 10px 30px $shadow-primary;
   }
 }
 
@@ -109,31 +100,31 @@ const closeModal = () => {
   padding: 1.5rem;
 
   h3 {
-    color: #4a90e2;
+    color: $primary-color;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
 
   p {
-    color: #aaa;
+    color: $text-secondary;
     line-height: 1.6;
     margin-bottom: 1rem;
   }
 }
 
 .view-details {
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  background: $gradient-primary;
   border: none;
-  color: #fff;
+  color: $light-text;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: $radius-sm;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: $transition-base;
 
   &:hover {
     transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+    box-shadow: 0 5px 15px $shadow-primary-strong;
   }
 }
 </style>

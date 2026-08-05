@@ -69,12 +69,14 @@ const closeMenu = () => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .navigation {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: $z-nav;
   background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease;
@@ -109,19 +111,19 @@ const closeMenu = () => {
   margin: 0;
   padding: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     position: fixed;
     top: 0;
     right: -100%;
     width: 70%;
     max-width: 300px;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
+    background: $overlay-dark;
     flex-direction: column;
     padding: 5rem 2rem 2rem;
     gap: 1rem;
     transition: right 0.3s ease;
-    z-index: 1001;
+    z-index: $z-nav + 1;
 
     &.menu-open {
       right: 0;
@@ -130,7 +132,7 @@ const closeMenu = () => {
 }
 
 .nav-link {
-  color: #fff;
+  color: $light-text;
   text-decoration: none;
   font-size: 1.1rem;
   transition: color 0.3s ease;
@@ -138,11 +140,11 @@ const closeMenu = () => {
   padding: 0.5rem 0;
 
   &:hover {
-    color: #4a90e2;
+    color: $primary-color;
   }
 
   &.router-link-active {
-    color: #4a90e2;
+    color: $primary-color;
 
     &::after {
       content: '';
@@ -151,9 +153,9 @@ const closeMenu = () => {
       left: 0;
       right: 0;
       height: 2px;
-      background: #4a90e2;
+      background: $primary-color;
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         left: -1rem;
         right: auto;
         width: 4px;
@@ -173,16 +175,16 @@ const closeMenu = () => {
   border: none;
   cursor: pointer;
   padding: 5px;
-  z-index: 1002;
+  z-index: $z-nav + 2;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     display: flex;
   }
 
   span {
     width: 25px;
     height: 3px;
-    background: #fff;
+    background: $light-text;
     transition: all 0.3s ease;
   }
 
@@ -207,10 +209,10 @@ const closeMenu = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
+  background: $overlay-medium;
+  z-index: $z-nav;
 
-  @media (min-width: 769px) {
+  @media (min-width: $breakpoint-md + 1) {
     display: none;
   }
 }

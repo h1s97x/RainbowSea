@@ -2,9 +2,11 @@
   <div class="home">
     <section class="hero">
       <div class="hero-content">
-        <h1 ref="titleRef" class="hero-title">星游记</h1>
-        <p ref="subtitleRef" class="hero-subtitle">Rainbow Sea Journey</p>
-        <p ref="descRef" class="hero-description">在彩虹海的尽头，有一个传说中的地方...</p>
+        <h1 v-reveal class="hero-title">星游记</h1>
+        <p v-reveal="{ options: { delay: 0.3 } }" class="hero-subtitle">Rainbow Sea Journey</p>
+        <p v-reveal="{ options: { delay: 0.6 } }" class="hero-description">
+          在彩虹海的尽头，有一个传说中的地方...
+        </p>
       </div>
     </section>
 
@@ -28,7 +30,7 @@
       </div>
     </section>
 
-    <section ref="introRef" class="intro-section">
+    <section v-reveal="{ options: { y: 50 } }" class="intro-section">
       <div class="container">
         <h2 class="section-title">关于星游记</h2>
         <div class="intro-content">
@@ -44,11 +46,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules'
 import { CAROUSEL_IMAGES } from '@/data/carousel'
-import { useAnimation } from '@/composables/useAnimation'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -57,27 +58,11 @@ import 'swiper/css/effect-fade'
 
 const modules = [Navigation, Pagination, Autoplay, EffectFade]
 const carouselImages = ref(CAROUSEL_IMAGES)
-
-const titleRef = ref<HTMLElement | null>(null)
-const subtitleRef = ref<HTMLElement | null>(null)
-const descRef = ref<HTMLElement | null>(null)
-const introRef = ref<HTMLElement | null>(null)
-
-const { fadeIn, slideInUp, scrollTriggerAnimation } = useAnimation()
-
-onMounted(() => {
-  fadeIn(titleRef.value, { duration: 1.5, delay: 0.3 })
-  slideInUp(subtitleRef.value, { delay: 0.8 })
-  slideInUp(descRef.value, { delay: 1.2 })
-  scrollTriggerAnimation(introRef.value, {
-    y: 50,
-    opacity: 0,
-    duration: 1
-  })
-})
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .home {
   min-height: 100vh;
 }
@@ -97,29 +82,29 @@ onMounted(() => {
 
 .hero-title {
   font-size: 5rem;
-  color: #fff;
+  color: $light-text;
   margin-bottom: 1rem;
-  text-shadow: 0 0 20px rgba(74, 144, 226, 0.8);
+  text-shadow: 0 0 20px $primary-glow-strong;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     font-size: 3rem;
   }
 }
 
 .hero-subtitle {
   font-size: 2rem;
-  color: #4a90e2;
+  color: $primary-color;
   margin-bottom: 2rem;
   animation-delay: 0.3s;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     font-size: 1.5rem;
   }
 }
 
 .hero-description {
   font-size: 1.2rem;
-  color: #aaa;
+  color: $text-secondary;
   max-width: 600px;
   margin: 0 auto;
   animation-delay: 0.6s;
@@ -127,11 +112,11 @@ onMounted(() => {
 
 .carousel-section {
   padding: 4rem 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: $overlay-light;
 }
 
 .main-swiper {
-  border-radius: 10px;
+  border-radius: $radius-md;
   overflow: hidden;
 
   img {
@@ -139,7 +124,7 @@ onMounted(() => {
     height: 500px;
     object-fit: cover;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       height: 300px;
     }
   }
@@ -151,7 +136,7 @@ onMounted(() => {
 
 .section-title {
   font-size: 2.5rem;
-  color: #fff;
+  color: $light-text;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -162,7 +147,7 @@ onMounted(() => {
 
   p {
     font-size: 1.2rem;
-    color: #ccc;
+    color: $text-muted;
     line-height: 1.8;
     margin-bottom: 1.5rem;
   }

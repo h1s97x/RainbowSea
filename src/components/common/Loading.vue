@@ -40,17 +40,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .loading-container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #000;
+  background: $dark-bg;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: $z-overlay;
   animation: fadeOut 0.5s ease 1.5s forwards;
 }
 
@@ -65,7 +67,7 @@ onUnmounted(() => {
 }
 
 .loading-text {
-  color: #fff;
+  color: $light-text;
   font-size: 1.5rem;
   animation: blink 1.5s ease-in-out infinite;
 }

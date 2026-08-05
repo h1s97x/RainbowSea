@@ -10,6 +10,7 @@
         </transition>
       </router-view>
     </main>
+    <Footer />
     <MusicPlayer />
   </div>
 </template>
@@ -19,9 +20,11 @@ import Navigation from '@/components/layout/Navigation.vue'
 import Loading from '@/components/common/Loading.vue'
 import StarField from '@/components/effects/StarField.vue'
 import MusicPlayer from '@/components/common/MusicPlayer.vue'
+import Footer from '@/components/layout/Footer.vue'
 </script>
 
 <style lang="scss">
+@use '@/assets/styles/variables' as *;
 @use '@/assets/styles/main.scss';
 
 .main-content {

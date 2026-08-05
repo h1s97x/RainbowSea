@@ -1,12 +1,13 @@
 <template>
   <div class="gallery">
     <div class="container">
-      <h1 ref="titleRef" class="page-title">图片画廊</h1>
+      <h1 v-reveal class="page-title">图片画廊</h1>
 
-      <div ref="gridRef" class="gallery-grid">
+      <div class="gallery-grid">
         <div
           v-for="(image, index) in images"
           :key="image.id"
+          v-reveal="{ options: { y: 30, stagger: 0.05 } }"
           class="gallery-item"
           @click="openLightbox(index)"
         >
@@ -33,23 +34,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { GALLERY_IMAGES } from '@/data/gallery'
-import { useAnimation } from '@/composables/useAnimation'
 import LazyImage from '@/components/common/LazyImage.vue'
 
 const images = ref(GALLERY_IMAGES)
 
 const lightboxIndex = ref<number | null>(null)
-const titleRef = ref<HTMLElement | null>(null)
-const gridRef = ref<HTMLElement | null>(null)
-
-const { fadeIn, staggerAnimation } = useAnimation()
-
-onMounted(() => {
-  fadeIn(titleRef.value, { duration: 1 })
-
-  const items = gridRef.value?.querySelectorAll('.gallery-item') ?? []
-  staggerAnimation(items, { delay: 0.3, stagger: 0.05 })
-})
 
 const openLightbox = (index: number) => {
   lightboxIndex.value = index
@@ -102,6 +91,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .gallery {
   min-height: 100vh;
   padding: 8rem 0 4rem;
@@ -109,7 +100,7 @@ onUnmounted(() => {
 
 .page-title {
   font-size: 3rem;
-  color: #fff;
+  color: $light-text;
   text-align: center;
   margin-bottom: 3rem;
 }
@@ -124,7 +115,7 @@ onUnmounted(() => {
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: $radius-md;
   cursor: pointer;
 
   &:hover :deep(.image) {
@@ -138,7 +129,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: $overlay-medium;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,7 +137,7 @@ onUnmounted(() => {
   transition: opacity 0.3s ease;
 
   span {
-    color: #fff;
+    color: $light-text;
     font-size: 1.2rem;
   }
 
@@ -161,11 +152,11 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: $overlay-dark;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: $z-lightbox;
 
   img {
     max-width: 90%;
@@ -190,13 +181,13 @@ onUnmounted(() => {
   right: 20px;
   background: none;
   border: none;
-  color: #fff;
+  color: $light-text;
   font-size: 3rem;
   cursor: pointer;
-  z-index: 10000;
+  z-index: $z-lightbox-control;
 
   &:hover {
-    color: #4a90e2;
+    color: $primary-color;
   }
 }
 
@@ -205,18 +196,18 @@ onUnmounted(() => {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.2);
+  background: $control-bg-strong;
   border: none;
-  color: #fff;
+  color: $light-text;
   font-size: 3rem;
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: $radius-full;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: $transition-base;
 
   &:hover {
-    background: rgba(74, 144, 226, 0.5);
+    background: $primary-glow;
   }
 }
 

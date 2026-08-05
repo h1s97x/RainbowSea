@@ -99,6 +99,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .star-field {
   position: fixed;
   top: 0;
@@ -106,6 +108,6 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: #000;
+  background: $dark-bg;
 }
 </style>

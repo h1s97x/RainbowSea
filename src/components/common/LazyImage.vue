@@ -59,12 +59,14 @@ watch(
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .lazy-image {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
+  background: $surface-color;
 }
 
 .image {
@@ -81,20 +83,20 @@ watch(
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: $surface-color;
 }
 
 .error-placeholder {
-  color: #e74c3c;
+  color: $accent-color;
   font-size: 0.9rem;
 }
 
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(74, 144, 226, 0.3);
-  border-top-color: #4a90e2;
-  border-radius: 50%;
+  border: 3px solid $primary-border;
+  border-top-color: $primary-color;
+  border-radius: $radius-full;
   animation: spin 1s linear infinite;
 }
 

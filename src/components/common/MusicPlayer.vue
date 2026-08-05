@@ -93,13 +93,15 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .music-player {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 999;
+  z-index: $z-player;
   background: rgba(0, 0, 0, 0.9);
-  border-radius: 10px;
+  border-radius: $radius-md;
   padding: 1rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -126,13 +128,13 @@ onMounted(() => {
   margin-bottom: 1rem;
 
   h3 {
-    color: #fff;
+    color: $light-text;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
   }
 
   p {
-    color: #aaa;
+    color: $text-secondary;
     font-size: 0.9rem;
   }
 }
@@ -144,18 +146,18 @@ onMounted(() => {
 }
 
 .btn-play {
-  background: #4a90e2;
+  background: $primary-color;
   border: none;
-  color: #fff;
+  color: $light-text;
   font-size: 1.5rem;
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  border-radius: $radius-full;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: $transition-base;
 
   &:hover {
-    background: #357abd;
+    background: $primary-dark;
     transform: scale(1.1);
   }
 }
@@ -167,7 +169,7 @@ onMounted(() => {
   margin-bottom: 1rem;
 
   .time {
-    color: #aaa;
+    color: $text-secondary;
     font-size: 0.8rem;
   }
 }
@@ -176,16 +178,16 @@ onMounted(() => {
 .volume-bar {
   flex: 1;
   height: 5px;
-  border-radius: 5px;
+  border-radius: $radius-sm;
   outline: none;
-  background: rgba(255, 255, 255, 0.2);
+  background: $control-bg-strong;
 
   &::-webkit-slider-thumb {
     appearance: none;
     width: 15px;
     height: 15px;
-    border-radius: 50%;
-    background: #4a90e2;
+    border-radius: $radius-full;
+    background: $primary-color;
     cursor: pointer;
   }
 }
@@ -208,19 +210,19 @@ onMounted(() => {
 
 .playlist-item {
   padding: 0.5rem;
-  color: #aaa;
+  color: $text-secondary;
   cursor: pointer;
-  border-radius: 5px;
-  transition: all 0.3s ease;
+  border-radius: $radius-sm;
+  transition: $transition-base;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: $control-bg;
+    color: $light-text;
   }
 
   &.active {
-    background: rgba(74, 144, 226, 0.3);
-    color: #4a90e2;
+    background: $primary-glow;
+    color: $primary-color;
   }
 }
 

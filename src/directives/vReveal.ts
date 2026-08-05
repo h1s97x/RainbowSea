@@ -25,18 +25,20 @@ function getObserver() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const { el, opts } = (entry.target as HTMLElement & { __reveal?: unknown })
-              .__reveal as {
+            const data = (entry.target as HTMLElement & { __reveal?: unknown }).__reveal as {
               el: HTMLElement
               opts: RevealOptions
+              index: number
             }
+            const { el, opts, index } = data
+            const staggerDelay = (opts.stagger ?? 0) * index
             gsap.to(el, {
               y: 0,
               x: 0,
               opacity: 1,
               scale: 1,
               duration: opts.duration ?? 0.8,
-              delay: opts.delay ?? 0,
+              delay: (opts.delay ?? 0) + staggerDelay,
               ease: 'power2.out',
               overwrite: 'auto',
               onComplete: () => {
@@ -54,6 +56,16 @@ function getObserver() {
   return observer
 }
 
+/** 计算元素在其父容器中同类 v-reveal 兄弟元素中的序号（用于 stagger 交错） */
+function getRevealIndex(el: HTMLElement): number {
+  const parent = el.parentElement
+  if (!parent) return 0
+  const siblings = Array.from(
+    parent.querySelectorAll<HTMLElement>('[data-v-reveal-index]')
+  )
+  return Math.max(0, siblings.indexOf(el))
+}
+
 /** v-reveal 指令：元素进入视口时播放进场动画 */
 export const vReveal: Directive<HTMLElement, RevealValue> = {
   mounted(el: HTMLElement, binding: DirectiveBinding<RevealValue>) {
@@ -63,6 +75,8 @@ export const vReveal: Directive<HTMLElement, RevealValue> = {
       ...(binding.value?.options ?? {})
     }
 
+    el.setAttribute('data-v-reveal-index', '')
+
     // 初始隐藏
     gsap.set(el, {
       y: opts.y ?? 0,
@@ -71,7 +85,11 @@ export const vReveal: Directive<HTMLElement, RevealValue> = {
       scale: opts.scale ?? 1
     })
 
-    ;(el as HTMLElement & { __reveal?: unknown }).__reveal = { el, opts }
+    ;(el as HTMLElement & { __reveal?: unknown }).__reveal = {
+      el,
+      opts,
+      index: getRevealIndex(el)
+    }
     getObserver().observe(el)
 
     binding.value?.onEnter?.()

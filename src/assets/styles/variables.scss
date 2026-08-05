@@ -1,9 +1,31 @@
 // 颜色变量
 $primary-color: #4a90e2;
+$primary-dark: #357abd;
 $secondary-color: #f39c12;
 $accent-color: #e74c3c;
 $dark-bg: #000;
 $light-text: #fff;
+$text-secondary: #aaa;
+$text-muted: #ccc;
+$surface-color: rgba(255, 255, 255, 0.05);
+$surface-hover: rgba(255, 255, 255, 0.08);
+$primary-glow: rgba(74, 144, 226, 0.5);
+$primary-glow-strong: rgba(74, 144, 226, 0.8);
+$primary-border: rgba(74, 144, 226, 0.2);
+$primary-border-strong: rgba(74, 144, 226, 0.5);
+$shadow-primary: rgba(74, 144, 226, 0.3);
+$shadow-primary-strong: rgba(74, 144, 226, 0.4);
+$shadow-dark: rgba(0, 0, 0, 0.5);
+$shadow-modal: rgba(74, 144, 226, 0.3);
+$overlay-dark: rgba(0, 0, 0, 0.95);
+$overlay-medium: rgba(0, 0, 0, 0.7);
+$overlay-light: rgba(0, 0, 0, 0.5);
+$gradient-primary: linear-gradient(135deg, $primary-color, $primary-dark);
+$gradient-timeline: linear-gradient(180deg, $primary-color, $primary-dark);
+$gradient-modal: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 30, 0.95));
+$btn-danger: rgba(231, 76, 60, 0.8);
+$control-bg: rgba(255, 255, 255, 0.1);
+$control-bg-strong: rgba(255, 255, 255, 0.2);
 
 // 字体
 $font-family-base:
@@ -22,6 +44,13 @@ $spacing-md: 1.5rem;
 $spacing-lg: 2rem;
 $spacing-xl: 3rem;
 
+// 圆角
+$radius-sm: 5px;
+$radius-md: 10px;
+$radius-lg: 15px;
+$radius-xl: 20px;
+$radius-full: 50%;
+
 // 断点
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
@@ -31,3 +60,10 @@ $breakpoint-xl: 1200px;
 // 过渡
 $transition-base: all 0.3s ease;
 $transition-slow: all 0.6s ease;
+
+// 层级
+$z-nav: 1000;
+$z-player: 999;
+$z-overlay: 9999;
+$z-lightbox: 9999;
+$z-lightbox-control: 10000;
