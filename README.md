@@ -37,7 +37,6 @@ RainbowSea/
 ├── public/                 # 静态资源
 │   ├── assets/
 │   │   ├── image/         # 图片资源
-│   │   ├── fonts/         # 字体文件
 │   │   └── music/         # 音乐文件
 │   ├── 404.html           # SPA 路由兜底
 │   └── favicon.ico
