@@ -59,7 +59,7 @@ watch(
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/styles/variables' as *;
+@use '@/styles/tokens' as *;
 
 .lazy-image {
   position: relative;

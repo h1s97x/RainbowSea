@@ -33,7 +33,7 @@ import { ref, computed } from 'vue'
 import { CHARACTERS } from '@/data/characters'
 import type { Character } from '@/types/character'
 import LazyImage from '@/components/common/LazyImage.vue'
-import CharacterModal from '@/components/common/CharacterModal.vue'
+import CharacterModal from './CharacterModal.vue'
 
 const characters = ref(CHARACTERS)
 const showModal = ref(false)
@@ -53,7 +53,7 @@ const closeModal = () => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/styles/variables' as *;
+@use '@/styles/tokens' as *;
 
 .characters {
   min-height: 100vh;

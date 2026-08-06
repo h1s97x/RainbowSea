@@ -30,7 +30,7 @@ const year = new Date().getFullYear()
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/styles/variables' as *;
+@use '@/styles/tokens' as *;
 
 .site-footer {
   background: rgba(0, 0, 0, 0.9);

@@ -145,7 +145,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/styles/variables' as *;
+@use '@/styles/tokens' as *;
 
 .modal-overlay {
   position: fixed;

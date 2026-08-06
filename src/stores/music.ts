@@ -3,8 +3,7 @@ import { Howl } from 'howler'
 import { ref } from 'vue'
 import { MUSIC_LIST } from '@/data/music'
 import type { MusicTrack } from '@/types/music'
-
-const STORAGE_KEY = 'rainbowsea.music'
+import { MUSIC_STORAGE_KEY, DEFAULT_VOLUME } from '@/constants'
 
 interface PersistedMusic {
   volume: number
@@ -13,15 +12,15 @@ interface PersistedMusic {
 
 function loadPersisted(): PersistedMusic {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return { volume: 0.7, currentTrackId: null }
+    const raw = localStorage.getItem(MUSIC_STORAGE_KEY)
+    if (!raw) return { volume: DEFAULT_VOLUME, currentTrackId: null }
     const parsed = JSON.parse(raw) as Partial<PersistedMusic>
     return {
-      volume: typeof parsed.volume === 'number' ? parsed.volume : 0.7,
+      volume: typeof parsed.volume === 'number' ? parsed.volume : DEFAULT_VOLUME,
       currentTrackId: typeof parsed.currentTrackId === 'number' ? parsed.currentTrackId : null
     }
   } catch {
-    return { volume: 0.7, currentTrackId: null }
+    return { volume: DEFAULT_VOLUME, currentTrackId: null }
   }
 }
 
@@ -41,7 +40,7 @@ export const useMusicStore = defineStore('music', () => {
   function persist() {
     try {
       localStorage.setItem(
-        STORAGE_KEY,
+        MUSIC_STORAGE_KEY,
         JSON.stringify({ volume: volume.value, currentTrackId: currentTrack.value?.id ?? null })
       )
     } catch {

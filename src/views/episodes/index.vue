@@ -48,7 +48,7 @@ const episodes = ref(EPISODES)
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/styles/variables' as *;
+@use '@/styles/tokens' as *;
 
 .episodes {
   min-height: 100vh;

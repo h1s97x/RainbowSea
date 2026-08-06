@@ -6,25 +6,25 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/Home.vue'),
+      component: () => import('@/views/home/index.vue'),
       meta: { transition: 'fade' }
     },
     {
       path: '/characters',
       name: 'characters',
-      component: () => import('../views/Characters.vue'),
+      component: () => import('@/views/characters/index.vue'),
       meta: { transition: 'slide-left' }
     },
     {
       path: '/episodes',
       name: 'episodes',
-      component: () => import('../views/Episodes.vue'),
+      component: () => import('@/views/episodes/index.vue'),
       meta: { transition: 'slide-left' }
     },
     {
       path: '/gallery',
       name: 'gallery',
-      component: () => import('../views/Gallery.vue'),
+      component: () => import('@/views/gallery/index.vue'),
       meta: { transition: 'slide-up' }
     }
   ],

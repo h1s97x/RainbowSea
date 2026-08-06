@@ -24,8 +24,8 @@ import Footer from '@/components/layout/Footer.vue'
 </script>
 
 <style lang="scss">
-@use '@/assets/styles/variables' as *;
-@use '@/assets/styles/main.scss';
+@use '@/styles/tokens' as *;
+@use '@/styles/main.scss';
 
 .main-content {
   position: relative;
