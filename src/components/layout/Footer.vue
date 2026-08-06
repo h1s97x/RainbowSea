@@ -18,7 +18,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>© {{ year }} Rainbow Sea Journey · 星游记粉丝站 · 仅供学习交流</p>
+        <p>© {{ year }} Rainbow Sea · 星游记粉丝站 · 仅供学习交流</p>
       </div>
     </div>
   </footer>

@@ -256,7 +256,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/RainbowSea/', // 子路径部署关键
     head: {
-      title: '星游记 - Rainbow Sea Journey',
+      title: '星游记 - Rainbow Sea',
       link: [{ rel: 'icon', href: '/RainbowSea/favicon.ico' }]
     }
   },

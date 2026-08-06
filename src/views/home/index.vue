@@ -3,9 +3,9 @@
     <section class="hero">
       <div class="hero-content">
         <h1 v-reveal class="hero-title">星游记</h1>
-        <p v-reveal="{ options: { delay: 0.3 } }" class="hero-subtitle">Rainbow Sea Journey</p>
+        <p v-reveal="{ options: { delay: 0.3 } }" class="hero-subtitle">Rainbow Sea</p>
         <p v-reveal="{ options: { delay: 0.6 } }" class="hero-description">
-          在彩虹海的尽头，有一个传说中的地方...
+          在彩虹海的尽头，有一个传说中的地方……
         </p>
       </div>
     </section>
@@ -35,10 +35,14 @@
         <h2 class="section-title">关于星游记</h2>
         <div class="intro-content">
           <p>
-            《星游记》是一部充满冒险与梦想的动画作品。 讲述了少年麦当为了寻找传说中的彩虹海，
-            踏上了一段充满挑战与奇遇的星际旅程。
+            《星游记》（Rainbow Sea）是由北京卡酷传媒等出品的国产动画，2011 年首播，共 26 集。
+            少年麦当是被称为"红魔鬼"的探险家麦林之子，他坚信父亲所说的"彩虹海"并非谎言，
+            与父亲立下五年后彩虹海相见的约定，踏上了星际旅程。
           </p>
-          <p>在这个旅程中，他结识了许多伙伴， 一起面对各种困难，共同成长。</p>
+          <p>
+            在旅程中，他结识了被变成兔子的亚亚罗国王咕咚·萌西、太阳系最后的星学家笛亚等伙伴，
+            一起穿越"魔鬼脚印"，对抗"五色眼"与克拉的野心，在冒险中共同成长。
+          </p>
         </div>
       </div>
     </section>
